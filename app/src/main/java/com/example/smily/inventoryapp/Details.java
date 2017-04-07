@@ -1,11 +1,14 @@
 package com.example.smily.inventoryapp;
 
+import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,15 +43,16 @@ public class Details extends AppCompatActivity {
     EditText supplierPhone;
     Button asc;
     Button des;
-    Uri currentItem;
+    Uri currentItemUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edittor);
 
+
         Intent intent = getIntent();
-        Uri currentItemUri = intent.getData();
+        currentItemUri = intent.getData();
         Cursor cursor = getContentResolver().query(currentItemUri, null, null, null, null);
         cursor.moveToFirst();
 
@@ -169,7 +173,7 @@ public class Details extends AppCompatActivity {
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_PHONE, supplierPhone.getText().toString());
 
 
-            getContentResolver().update(currentItem,values,null,null);
+            getContentResolver().update(currentItemUri,values,null,null);
         finish();
     }
 
@@ -205,7 +209,7 @@ public class Details extends AppCompatActivity {
 
     void deleteItem(){
 
-            getContentResolver().delete(currentItem,null,null);
+            getContentResolver().delete(currentItemUri,null,null);
 
         finish();
     }
