@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.smily.inventoryapp.Catalog">
+    <item
+        android:id="@+id/dummy_data"
+        android:title="Insert dummy data"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/delete_all"
+        android:title="Delete all entries"
+        app:showAsAction="never" />
+</menu>
