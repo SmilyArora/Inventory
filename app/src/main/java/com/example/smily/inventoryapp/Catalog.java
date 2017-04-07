@@ -64,6 +64,7 @@ public class Catalog extends AppCompatActivity implements LoaderManager.LoaderCa
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,12 +119,13 @@ public class Catalog extends AppCompatActivity implements LoaderManager.LoaderCa
 
     void insertDummy(){
         ContentValues values = new ContentValues();
-        values.put(ItemEntry.COLUMN_NAME, "Nanodgree project");
-        values.put(ItemEntry.COLUMN_PRICE, "Jim jam");
+        values.put(ItemEntry.COLUMN_NAME, "Biscuits");
+        values.put(ItemEntry.COLUMN_PRICE, 30);
         values.put(ItemEntry.COLUMN_COUNT, "223");
-        values.put(ItemEntry.COLUMN_SUPPLIER_EMAIL, "shubham013@live.com");
-        values.put(ItemEntry.COLUMN_SUPPLIER_NAME, "shubham");
+        values.put(ItemEntry.COLUMN_SUPPLIER_EMAIL, "smily.arora96@gmail.com");
+        values.put(ItemEntry.COLUMN_SUPPLIER_NAME, "smily");
         values.put(ItemEntry.COLUMN_SUPPLIER_PHONE, "9041908421");
+
         getContentResolver().insert(ItemEntry.ITEM_URI, values);
     }
 }

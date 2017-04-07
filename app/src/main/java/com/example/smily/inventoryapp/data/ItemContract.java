@@ -3,6 +3,8 @@ package com.example.smily.inventoryapp.data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import static android.text.style.TtsSpan.GENDER_FEMALE;
+import static android.text.style.TtsSpan.GENDER_MALE;
 
 
 public class ItemContract {
@@ -24,6 +26,13 @@ public class ItemContract {
         public static final String COLUMN_SUPPLIER_NAME = "supplier_name";
         public static final String COLUMN_SUPPLIER_PHONE = "supplier_phone";
         public static final String COLUMN_SUPPLIER_EMAIL = "supplier_email";
+        public static boolean isValidEmail(String email){
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        }
+
+        public static boolean isValidMobile(String phone) {
+            return android.util.Patterns.PHONE.matcher(phone).matches();
+        }
     }
 
 
