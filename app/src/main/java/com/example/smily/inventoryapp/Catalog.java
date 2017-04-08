@@ -2,6 +2,7 @@ package com.example.smily.inventoryapp;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -55,8 +57,6 @@ public class Catalog extends AppCompatActivity implements LoaderManager.LoaderCa
                 Uri currentItemUri = ContentUris.withAppendedId(ItemContract.ItemEntry.ITEM_URI,id);
                 intent.setData(currentItemUri);
                 startActivity(intent);
-//                Snackbar.make(view, "yeh tu kar :P", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
 
@@ -94,7 +94,25 @@ public class Catalog extends AppCompatActivity implements LoaderManager.LoaderCa
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.delete_all:
-                getContentResolver().delete(ItemContract.ItemEntry.ITEM_URI,null, null);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Delete entry");
+                alert.setMessage("Are you sure you want to delete?");
+                alert.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                getContentResolver().delete(ItemContract.ItemEntry.ITEM_URI,null, null);
+                            }
+                        });
+                alert.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                alert.show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

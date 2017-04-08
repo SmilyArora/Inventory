@@ -29,7 +29,7 @@
             android:label="Add New"/>
         <activity
             android:name=".Details"
-            android:label="Edit"
+            android:label="Details"
             android:theme="@style/AppTheme"></activity>
     </application>
 

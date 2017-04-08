@@ -2,4 +2,5 @@
     <string name="app_name">Inventory app</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_details">Details</string>
+    <string name="empty_cart">No items yet!! "\n" Add data by clicking add button "\n"or"\n" select Insert dummy data from options.</string>
 </resources>

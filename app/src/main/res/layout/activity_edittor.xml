@@ -54,7 +54,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:hint="0" />
+            android:text="0" />
 
         <Button
             android:id="@+id/detail_sub"
@@ -107,7 +107,8 @@
             <EditText
                 android:id="@+id/seller_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"/>
         </LinearLayout>
 
         <LinearLayout
@@ -124,7 +125,8 @@
             <EditText
                 android:id="@+id/seller_phone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="phone"/>
         </LinearLayout>
 
     </LinearLayout>

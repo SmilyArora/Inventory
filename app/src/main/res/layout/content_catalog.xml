@@ -17,12 +17,20 @@
     </ListView>
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/emptyview"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/empty_cart"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Empty hai bc"
-            android:id="@+id/emptyview"/>
+            android:text="@string/empty_cart"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="15sp"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

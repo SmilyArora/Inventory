@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -107,7 +108,7 @@ public class Edittor extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
         // This adds menu items to the app bar.
-        getMenuInflater().inflate(R.menu.menu_editor, menu);//TODO: replace save with a tick image
+        getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }
 
@@ -133,14 +134,25 @@ public class Edittor extends AppCompatActivity {
 
     void saveData(){
 
+        if (TextUtils.isEmpty(name.getText().toString()) || TextUtils.isEmpty(price.getText().toString()) ||
+                TextUtils.isEmpty(supplierName.getText().toString()) || TextUtils.isEmpty(supplierEmail.getText().toString()) ||
+                TextUtils.isEmpty(supplierPhone.getText().toString()) || !ItemContract.ItemEntry.isValidMobile(supplierPhone.getText().toString())
+         || !ItemContract.ItemEntry.isValidEmail(supplierEmail.getText().toString())) {
+            Toast.makeText(this, "Enter all the correct and valid details in editor", Toast.LENGTH_SHORT).show();
+            return;}
         ContentValues values = new ContentValues();
         values.put(ItemContract.ItemEntry.COLUMN_NAME, name.getText().toString());
         values.put(ItemContract.ItemEntry.COLUMN_PRICE, price.getText().toString());
-        int c = Integer.parseInt(count.getText().toString());
-        values.put(ItemContract.ItemEntry.COLUMN_COUNT, c);// TODO: convert to int
+        int c = 0;
+        if (!TextUtils.isEmpty(count.getText().toString())) {
+            c = Integer.parseInt(count.getText().toString());
+        }
+        values.put(ItemContract.ItemEntry.COLUMN_COUNT, c);
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_EMAIL, supplierEmail.getText().toString());
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_NAME, supplierName.getText().toString());
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_PHONE, supplierPhone.getText().toString());
+
+
 
         getContentResolver().insert(ItemContract.ItemEntry.ITEM_URI, values);
         finish();
@@ -174,7 +186,7 @@ public class Edittor extends AppCompatActivity {
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
-    } // TODO: copy to details.....no logical need over here...also remove from menu file
+    }
 
     void deleteItem(){
         finish();

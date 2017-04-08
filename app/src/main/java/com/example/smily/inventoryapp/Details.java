@@ -121,7 +121,7 @@ public class Details extends AppCompatActivity {
     private void showUnsavedChangesDialog(
             DialogInterface.OnClickListener discardButtonClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("insaved changes");
+        builder.setMessage("Unsaved changes");
         builder.setPositiveButton("Discard", discardButtonClickListener);
         builder.setNegativeButton("keep editing", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -152,7 +152,24 @@ public class Details extends AppCompatActivity {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.delete:
-                deleteItem();
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Delete entry");
+                alert.setMessage("Are you sure you want to delete?");
+                alert.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteItem();
+                            }
+                        });
+                alert.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                alert.show();
                 return true;
             case R.id.order:
                 contactSupplier();
