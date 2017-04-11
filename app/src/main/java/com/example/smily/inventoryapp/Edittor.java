@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -46,10 +48,23 @@ public class Edittor extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        super.onActivityResult(requestCode,resultCode,data);
+if(data != null) {
+
+    String[] images = {MediaStore.Images.Media.DATA};
+    Cursor cursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, images, null, null, null);
+    int cursor_dta = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+    cursor.moveToLast();
+    String path = cursor.getString(cursor_dta);
+    Bitmap bitmap = BitmapFactory.decodeFile(path);
+    Log.d("imagepath", bitmap.toString());
+
+
+}
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data!=null) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-
             img.setImageBitmap(imageBitmap);
 
             // Convert Bitmap to byte array
@@ -76,16 +91,13 @@ public class Edittor extends AppCompatActivity {
         img = (ImageView) findViewById(R.id.img_view);
         selectImage = (Button) findViewById(R.id.select_image);
 
-        selectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
-            }
-        });
-
+      selectImage.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+              startActivityForResult(i,0);
+          }
+      });
 
 
         asc.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +119,11 @@ public class Edittor extends AppCompatActivity {
         });
 
     }
+
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -173,6 +190,7 @@ public class Edittor extends AppCompatActivity {
          || !ItemContract.ItemEntry.isValidEmail(supplierEmail.getText().toString()) || TextUtils.isEmpty(image.toString())) {
             Toast.makeText(this, "Enter all the correct and valid details in editor", Toast.LENGTH_SHORT).show();
             return;}
+        ////////////////////////////////////////////////////////////////////////////////////////
         ContentValues values = new ContentValues();
         values.put(ItemContract.ItemEntry.COLUMN_NAME, name.getText().toString());
         values.put(ItemContract.ItemEntry.COLUMN_PRICE, price.getText().toString());
