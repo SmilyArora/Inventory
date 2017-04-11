@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.example.smily.inventoryapp.data.ItemContract;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.Blob;
 
 import static android.R.attr.path;
 
@@ -93,12 +95,19 @@ public class Details extends AppCompatActivity {
         String sName = cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_SUPPLIER_NAME));
         String sEmail = cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_SUPPLIER_EMAIL));
         String sPhone =  cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_SUPPLIER_PHONE));
+       // Blob sImage = cursor.getBlob(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE));
         name.setText(cName);
         price.setText(cPrice);
         count.setText(cAvail + "");
         supplierName.setText(sName);
         supplierEmail.setText(sEmail);
         supplierPhone.setText(sPhone);
+
+        // Convert byte array to bitmap and display the image
+        ImageView img = (ImageView) findViewById(R.id.img_view);
+        byte[] image = cursor.getBlob(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE));
+        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+        img.setImageBitmap(bitmap);
     }
 
     @Override
@@ -141,6 +150,7 @@ public class Details extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_details, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

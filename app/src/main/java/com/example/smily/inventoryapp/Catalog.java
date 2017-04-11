@@ -143,6 +143,7 @@ public class Catalog extends AppCompatActivity implements LoaderManager.LoaderCa
         values.put(ItemEntry.COLUMN_SUPPLIER_EMAIL, "smily.arora96@gmail.com");
         values.put(ItemEntry.COLUMN_SUPPLIER_NAME, "smily");
         values.put(ItemEntry.COLUMN_SUPPLIER_PHONE, "9041908421");
+        //values.put(ItemEntry.COLUMN_IMAGE, null);
 
         getContentResolver().insert(ItemEntry.ITEM_URI, values);
     }

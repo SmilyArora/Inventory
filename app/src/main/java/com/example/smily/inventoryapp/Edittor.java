@@ -24,9 +24,14 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import com.example.smily.inventoryapp.data.ItemContract;
 
+import static android.R.attr.data;
+import static android.R.attr.imeSubtypeExtraValue;
+
 public class Edittor extends AppCompatActivity {
     private static final int FILE_SELECT_CODE = 2;
     boolean infoItemHasChanged = true;
+    private int REQUEST_IMAGE_CAPTURE = 1;
+    byte[] image;
     EditText name;
     EditText price;
     EditText count;
@@ -36,14 +41,29 @@ public class Edittor extends AppCompatActivity {
     Button selectImage;
     Button asc;
     Button des;
+    ImageView img;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data!=null) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            img.setImageBitmap(imageBitmap);
+
+            // Convert Bitmap to byte array
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            image = stream.toByteArray();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edittor);
 
-
-        selectImage = (Button) findViewById(R.id.select_image);
 
         name = (EditText) findViewById(R.id.detail_name);
         price = (EditText) findViewById(R.id.detail_price);
@@ -53,6 +73,19 @@ public class Edittor extends AppCompatActivity {
         supplierPhone = (EditText) findViewById(R.id.seller_phone);
         asc = (Button) findViewById(R.id.detail_add);
         des = (Button) findViewById(R.id.detail_sub);
+        img = (ImageView) findViewById(R.id.img_view);
+        selectImage = (Button) findViewById(R.id.select_image);
+
+        selectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+            }
+        });
+
 
 
         asc.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +170,7 @@ public class Edittor extends AppCompatActivity {
         if (TextUtils.isEmpty(name.getText().toString()) || TextUtils.isEmpty(price.getText().toString()) ||
                 TextUtils.isEmpty(supplierName.getText().toString()) || TextUtils.isEmpty(supplierEmail.getText().toString()) ||
                 TextUtils.isEmpty(supplierPhone.getText().toString()) || !ItemContract.ItemEntry.isValidMobile(supplierPhone.getText().toString())
-         || !ItemContract.ItemEntry.isValidEmail(supplierEmail.getText().toString())) {
+         || !ItemContract.ItemEntry.isValidEmail(supplierEmail.getText().toString()) || TextUtils.isEmpty(image.toString())) {
             Toast.makeText(this, "Enter all the correct and valid details in editor", Toast.LENGTH_SHORT).show();
             return;}
         ContentValues values = new ContentValues();
@@ -151,6 +184,7 @@ public class Edittor extends AppCompatActivity {
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_EMAIL, supplierEmail.getText().toString());
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_NAME, supplierName.getText().toString());
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_PHONE, supplierPhone.getText().toString());
+        values.put(ItemContract.ItemEntry.COLUMN_IMAGE, image);
 
 
 

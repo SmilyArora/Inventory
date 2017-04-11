@@ -10,7 +10,6 @@ public class ItemDbHelper extends SQLiteOpenHelper {
 
     public final static String DB_NAME = "inventory.db";
     public final static int DB_VERSION = 1;
-    //to degib errors
     public final static String LOG_TAG = ItemDbHelper.class.getSimpleName();
 
     public ItemDbHelper(Context context) {
@@ -28,8 +27,8 @@ public class ItemDbHelper extends SQLiteOpenHelper {
                 ItemEntry.COLUMN_COUNT + " INTEGER DEFAULT 0," +
                 ItemEntry.COLUMN_SUPPLIER_NAME + " TEXT," +
                 ItemEntry.COLUMN_SUPPLIER_PHONE + " TEXT," +
-                ItemEntry.COLUMN_SUPPLIER_EMAIL + " TEXT" +
-                ");";
+                ItemEntry.COLUMN_SUPPLIER_EMAIL + " TEXT," +
+                ItemEntry.COLUMN_IMAGE + "BLOB NOT NULL);";
 
         db.execSQL(table);
     }
