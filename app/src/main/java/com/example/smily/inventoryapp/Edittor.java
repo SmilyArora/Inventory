@@ -170,15 +170,16 @@ public class Edittor extends AppCompatActivity {
         if (TextUtils.isEmpty(name.getText().toString()) || TextUtils.isEmpty(price.getText().toString()) ||
                 TextUtils.isEmpty(supplierName.getText().toString()) || TextUtils.isEmpty(supplierEmail.getText().toString()) ||
                 TextUtils.isEmpty(supplierPhone.getText().toString()) || !ItemContract.ItemEntry.isValidMobile(supplierPhone.getText().toString())
-         || !ItemContract.ItemEntry.isValidEmail(supplierEmail.getText().toString()) || TextUtils.isEmpty(image.toString())) {
+                || !ItemContract.ItemEntry.isValidEmail(supplierEmail.getText().toString()) || image.length < 1) {
             Toast.makeText(this, "Enter all the correct and valid details in editor", Toast.LENGTH_SHORT).show();
             return;}
         ContentValues values = new ContentValues();
         values.put(ItemContract.ItemEntry.COLUMN_NAME, name.getText().toString());
         values.put(ItemContract.ItemEntry.COLUMN_PRICE, price.getText().toString());
         int c = 0;
-        if (!TextUtils.isEmpty(count.getText().toString())) {
-            c = Integer.parseInt(count.getText().toString());
+        String count = this.count.getText().toString().trim();
+        if (!TextUtils.isEmpty(count)) {
+            c = Integer.parseInt(count);
         }
         values.put(ItemContract.ItemEntry.COLUMN_COUNT, c);
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_EMAIL, supplierEmail.getText().toString());

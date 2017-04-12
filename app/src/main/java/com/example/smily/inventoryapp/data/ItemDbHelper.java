@@ -28,7 +28,8 @@ public class ItemDbHelper extends SQLiteOpenHelper {
                 ItemEntry.COLUMN_SUPPLIER_NAME + " TEXT," +
                 ItemEntry.COLUMN_SUPPLIER_PHONE + " TEXT," +
                 ItemEntry.COLUMN_SUPPLIER_EMAIL + " TEXT," +
-                ItemEntry.COLUMN_IMAGE + "BLOB NOT NULL);";
+                ItemEntry.COLUMN_IMAGE + " BLOB" +
+                ");";
 
         db.execSQL(table);
     }

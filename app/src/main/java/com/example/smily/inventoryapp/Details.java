@@ -1,38 +1,23 @@
 package com.example.smily.inventoryapp;
 
-import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.smily.inventoryapp.data.ItemContract;
-
-import java.io.ByteArrayOutputStream;
-import java.sql.Blob;
-
-import static android.R.attr.path;
 
 public class Details extends AppCompatActivity {
     private static final int FILE_SELECT_CODE = 2;
@@ -66,6 +51,7 @@ public class Details extends AppCompatActivity {
         supplierPhone = (EditText) findViewById(R.id.seller_phone);
         asc = (Button) findViewById(R.id.detail_add);
         des = (Button) findViewById(R.id.detail_sub);
+        findViewById(R.id.select_image).setVisibility(View.GONE);
 
 
         asc.setOnClickListener(new View.OnClickListener() {
@@ -80,22 +66,22 @@ public class Details extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int x = Integer.parseInt(count.getText().toString().trim());
-                if(x<1){return;}
+                if (x < 1) {
+                    return;
+                }
                 x--;
                 count.setText(x + " ");
             }
         });
 
 
-
-
         String cName = cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_NAME));
         String cPrice = cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_PRICE));
-        int cAvail =  cursor.getInt(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_COUNT));
+        int cAvail = cursor.getInt(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_COUNT));
         String sName = cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_SUPPLIER_NAME));
         String sEmail = cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_SUPPLIER_EMAIL));
-        String sPhone =  cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_SUPPLIER_PHONE));
-       // Blob sImage = cursor.getBlob(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE));
+        String sPhone = cursor.getString(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_SUPPLIER_PHONE));
+        // Blob sImage = cursor.getBlob(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE));
         name.setText(cName);
         price.setText(cPrice);
         count.setText(cAvail + "");
@@ -106,8 +92,10 @@ public class Details extends AppCompatActivity {
         // Convert byte array to bitmap and display the image
         ImageView img = (ImageView) findViewById(R.id.img_view);
         byte[] image = cursor.getBlob(cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE));
-        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-        img.setImageBitmap(bitmap);
+        if (image != null && image.length > 0) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            img.setImageBitmap(bitmap);
+        }
     }
 
     @Override
@@ -189,7 +177,7 @@ public class Details extends AppCompatActivity {
     }
 
 
-    void saveData(){
+    void saveData() {
 
         ContentValues values = new ContentValues();
         values.put(ItemContract.ItemEntry.COLUMN_NAME, name.getText().toString());
@@ -200,11 +188,11 @@ public class Details extends AppCompatActivity {
         values.put(ItemContract.ItemEntry.COLUMN_SUPPLIER_PHONE, supplierPhone.getText().toString());
 
 
-            getContentResolver().update(currentItemUri,values,null,null);
+        getContentResolver().update(currentItemUri, values, null, null);
         finish();
     }
 
-    void contactSupplier(){
+    void contactSupplier() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(Details.this);
         builder1.setMessage("Contact dealer via");
         builder1.setCancelable(true);
@@ -223,7 +211,7 @@ public class Details extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                "mailto",supplierEmail.getText().toString().trim(), null));
+                                "mailto", supplierEmail.getText().toString().trim(), null));
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
                         emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
                         startActivity(Intent.createChooser(emailIntent, "Send email..."));
@@ -234,9 +222,9 @@ public class Details extends AppCompatActivity {
         alert11.show();
     }
 
-    void deleteItem(){
+    void deleteItem() {
 
-            getContentResolver().delete(currentItemUri,null,null);
+        getContentResolver().delete(currentItemUri, null, null);
 
         finish();
     }
